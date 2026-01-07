@@ -34,8 +34,20 @@ app.get('/notes/:noteId', (req, res) => {
   res.status(200).json({ message: `Retrived note with ID: ${noteId}` });
 });
 
+app.get('/test-error', (req, res) => {
+  throw new Error("Something went wrong");
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
+});
+
+app.use((err, res, req, next) => {
+  console.log("Error:", err.message);
+  res.status(500).json({
+    message: "Internal Server Error",
+    error: err.message
+  });
 });
 
 app.listen(PORT, () => {
