@@ -1,3 +1,10 @@
+.vscode
+.DS_Store
+.idea
+
+# env vars
+.env
+
 # Logs
 logs
 *.log
