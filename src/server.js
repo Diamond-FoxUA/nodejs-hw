@@ -26,12 +26,12 @@ app.use(
 const PORT = process.env.PORT ?? 3000;
 
 app.get('/notes', (req, res) => {
-  res.status(200).json({ message: "Retrived all notes" });
+  res.status(200).json({ message: "Retrieved all notes" });
 });
 
 app.get('/notes/:noteId', (req, res) => {
   const noteId = req.params.noteId;
-  res.status(200).json({ message: `Retrived note with ID: ${noteId}` });
+  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
 });
 
 app.get('/test-error', (req, res) => {
@@ -42,7 +42,7 @@ app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-app.use((err, res, req, next) => {
+app.use((err, req, res, next) => {
   console.log("Error:", err.message);
   res.status(500).json({
     message: "Internal Server Error",
