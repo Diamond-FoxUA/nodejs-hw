@@ -1,3 +1,4 @@
+import createHttpError from "http-errors";
 import { Note } from "../models/note.js";
 
 export const getAllNotes = async (req, res) => {
@@ -10,7 +11,7 @@ export const getNoteById = async (req, res) => {
 
   const note = await Note.findById(noteId);
   if(!note) {
-    res.status(404).json({ message: "Note not found" });
+    throw createHttpError(404, "Note not found");
   }
 
   res.status(200).json(note);
