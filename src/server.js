@@ -1,13 +1,18 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
+import helmet from "helmet";
 import 'dotenv/config';
 import connectMongoDB from './db/connectMongoDB.js';
+import { notFoundHandler } from './middleware/notFoundHandler.js';
+import { errorHandler } from './middleware/errorhandler.js';
+import notesRoutes from "./routes/notesRoutes.js";
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use(helmet());
 app.use(
   pino({
     level: 'info',
@@ -26,30 +31,11 @@ app.use(
 
 const PORT = process.env.PORT ?? 3000;
 
-app.get('/notes', (req, res) => {
-  res.status(200).json({ message: "Retrieved all notes" });
-});
+app.use(notesRoutes);
 
-app.get('/notes/:noteId', (req, res) => {
-  const noteId = req.params.noteId;
-  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
-});
+app.use(notFoundHandler);
 
-app.get('/test-error', (req, res) => {
-  throw new Error("Something went wrong");
-});
-
-app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
-});
-
-app.use((err, req, res, next) => {
-  console.log("Error:", err.message);
-  res.status(500).json({
-    message: "Internal Server Error",
-    error: err.message
-  });
-});
+app.use(errorHandler);
 
 await connectMongoDB();
 
