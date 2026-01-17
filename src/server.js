@@ -5,7 +5,7 @@ import helmet from "helmet";
 import 'dotenv/config';
 import connectMongoDB from './db/connectMongoDB.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
-import { errorHandler } from './middleware/errorhandler.js';
+import { errorHandler } from './middleware/errorHandler.js';
 import notesRoutes from "./routes/notesRoutes.js";
 
 const app = express();
