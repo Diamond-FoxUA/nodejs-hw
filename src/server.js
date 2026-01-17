@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from "helmet";
 import 'dotenv/config';
-import logger from './middleware/logger.js';
+import { logger } from './middleware/logger.js';
 import connectMongoDB from './db/connectMongoDB.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
