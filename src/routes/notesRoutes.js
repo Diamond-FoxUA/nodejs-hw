@@ -8,7 +8,7 @@ const router = Router();
 router.get('/notes', celebrate(getAllNotesSchema), getAllNotes);
 router.get('/notes/:noteId', celebrate(noteIdSchema), getNoteById);
 router.post('/notes', createNote);
-router.delete('/notes/:noteId', deleteNote);
+router.delete('/notes/:noteId', celebrate(noteIdSchema), deleteNote);
 router.patch('/notes/:noteId', updateNote);
 
 export default router;
