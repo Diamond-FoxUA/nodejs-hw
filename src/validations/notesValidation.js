@@ -6,6 +6,6 @@ export const getAllNotesSchema = {
     page: Joi.number().integer().min(1),
     perPage: Joi.number().integer().min(5).max(20),
     tag: Joi.string().valid(...TAGS),
-    search: Joi.string().trim(),
+    search: Joi.string().trim().allow(''),
   }),
 };
