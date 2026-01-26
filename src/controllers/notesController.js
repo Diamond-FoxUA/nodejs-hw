@@ -11,10 +11,9 @@ export const getAllNotes = async (req, res) => {
   }
 
   if (search) {
-    noteQuery.or([
-      { title: { $regex: search, $options: 'i' }},
-      { content: { $regex: search, $options: 'i' } }
-    ]);
+    noteQuery.where(
+      { $text: { $search: search } }
+    );
   }
 
   const [totalNotes, notes] = await Promise.all([
