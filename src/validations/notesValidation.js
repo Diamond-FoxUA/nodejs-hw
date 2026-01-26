@@ -13,7 +13,7 @@ export const getAllNotesSchema = {
 
 const objectIdValidator = (value, helpers) => {
   if(!isValidObjectId(value)) {
-    helpers.error("any.invalid");
+    return helpers.error("any.invalid");
   }
   return value;
 };
