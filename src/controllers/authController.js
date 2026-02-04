@@ -1,5 +1,6 @@
 import createHttpError from "http-errors";
 import { User } from "../models/user.js";
+import { Session } from "../models/session.js";
 import { createSession, setSessionCookies } from "../services/auth.js";
 import bcrypt from "bcrypt";
 
@@ -22,4 +23,17 @@ export const registerUser = async (req, res) => {
   setSessionCookies(res, newSession);
 
   res.status(201).json(newUser);
+};
+
+export const logoutUser = async (req, res) => {
+  const { sessionId } = req.cookies;
+  if (sessionId) {
+    await Session.deleteOne({ _id: sessionId });
+  }
+
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+  res.clearCookie("sessionId");
+
+  res.status(204).send();
 };
