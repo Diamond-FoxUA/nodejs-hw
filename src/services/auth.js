@@ -1,8 +1,8 @@
-import { Session } from "../models/session";
+import { Session } from "../models/session.js";
 import crypto from "crypto";
 import { FIFTEEN_MINUTES, ONE_DAY } from "../constants/time.js";
 
-export const setSessionCoookies =  async (userId) => {
+export const createSession =  async (userId) => {
   const accessToken = crypto.randomBytes(30).toString("base64");
   const refreshToken = crypto.randomBytes(30).toString("base64");
 
