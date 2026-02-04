@@ -38,7 +38,7 @@ export const getNoteById = async (req, res) => {
 
   const note = await Note.findOne({
       userId: req.user._id,
-      noteId
+      _id: noteId
    });
   if (!note) {
     throw createHttpError(404, "Note not found");
