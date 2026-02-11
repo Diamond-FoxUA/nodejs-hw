@@ -3,6 +3,8 @@ import { User } from "../models/user.js";
 import { Session } from "../models/session.js";
 import { createSession, setSessionCookies } from "../services/auth.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const registerUser = async (req, res) => {
   const { email, password } = req.body;
@@ -78,4 +80,35 @@ export const refreshUserSession = async (req, res) => {
   setSessionCookies(res, newSession);
 
   res.status(200).json({ "message": "Session refreshed" });
+};
+
+export const requestResetEmail = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(200).json({ message: "If this email exists, a reset link has been sent" });
+  }
+
+  const resetToken = jwt.sign(
+    { sub: user._id, email },
+    process.env.JWT_SECRET,
+    { expiresIn: '15m' },
+  );
+  const resetLink = `${process.env.FRONTEND_DOMAIN}/auth/reset-password?token=${resetToken}`;
+
+  try {
+    await sendEmail({
+      from: process.env.SMTP_FROM,
+      to: email,
+      subject: "Reset your password",
+      html: `Click <a href="${resetLink}" >here</a> to reset your password!`
+    });
+  } catch {
+    throw createHttpError(500, 'Failed to send the email, please try again later.');
+  }
+
+
+
+  res.status(200).json({ message: "If this email exists, a reset link has been sent" });
 };
