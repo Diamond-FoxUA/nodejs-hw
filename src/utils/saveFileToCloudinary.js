@@ -13,7 +13,8 @@ export const saveFileToCloudinary = async (buffer) => {
     const uploadStream = cloudinary.uploader.upload_stream({
       folder: "notehub-app/avatars",
       resource_type: "image",
-      public_id: `avatar_`,
+      unique_filename: true,
+      overwrite: false
     },
       (error, result) => {
         error ? reject(error) : resolve(result);
