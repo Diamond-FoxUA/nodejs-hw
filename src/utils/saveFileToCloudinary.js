@@ -8,13 +8,12 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export const saveFileToCloudinary = async (buffer, userId) => {
+export const saveFileToCloudinary = async (buffer) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream({
       folder: "notehub-app/avatars",
       resource_type: "image",
-      public_id: `avatar_${userId}`,
-      overwrite: true,
+      public_id: `avatar_`,
     },
       (error, result) => {
         error ? reject(error) : resolve(result);
